@@ -8,15 +8,15 @@ namespace Challenge_1
     {
         [SerializeField] GameObject m_plane;
         private Vector3 m_offset = new Vector3(40.0f, 0, 15.0f);
-
+        private Vector3 m_initialRotation = new Vector3(0, -90, 0);
 
 
         // Start is called before the first frame update
         void Start()
         {
-            
+            transform.Rotate(m_initialRotation);
         }
-
+        
         // Update is called once per frame
         void LateUpdate()
         {
