@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace BonusFeatures1
+namespace BonusFeatures1.EasyObstaclesPyramids
 {
     public class ObstaclesManager : MonoBehaviour
     {
@@ -17,11 +17,11 @@ namespace BonusFeatures1
 
 
         [Space(10)]
-        [Header("Easy Obstacles pyramids")]
+        [Header("Easy : Obstacles pyramids")]
         [SerializeField] private bool m_easyObstaclesPyramids = false;
 
         [Space(10)]
-        [Header("Medium OnComing Vehicles")]
+        [Header("Medium : OnComing Vehicles")]
         [SerializeField] private bool m_mediumOnComingVehicles = false;
 
 
@@ -102,12 +102,14 @@ namespace BonusFeatures1
 
         void IncreaseParentSpacing()
         {
+            // Increase the parent spacing by each call
             m_parentSpacingUsed += m_parentSpacingSetting;
         }
 
 
         void EasyObstaclesPyramids()
         {
+            // Easy : Obstacles Pyramids part
             SpawnObstacles("Triangle", m_triangleInitPos, m_traingleLayout);
             SpawnObstacles("TallRectangle", m_tallRectangleInitPos, m_tallRectangleLayout);
             SpawnObstacles("LowRectangle", m_lowRectangleInitPos, m_lowRectangleLayout);
@@ -121,18 +123,23 @@ namespace BonusFeatures1
 
         void MediumOnComingVehicles()
         {
-            for (int i = 1; i <= 9; i++)
+            // Medium : OnComing Vehicles part
+            for (int i = 1; i <= 8; i++)
             {
                 SpawnObstacles("One" + i, m_oneInitPos, m_oneLayout);
             }
         }
 
-        void SpawnObstacles(string parentName, Vector3 positionOffset, int[,] layout)
+        void SpawnObstacles(string collectorName, Vector3 positionOffset, int[,] layout)
         {
+
             IncreaseParentSpacing();
-            GameObject parentObject = new GameObject(parentName);
             // Create a parent object to collect obstacle prefabs
-            parentObject.transform.position = transform.position + (positionOffset + new Vector3(0, 0, m_parentSpacingUsed));
+            GameObject collectorObject = new GameObject(collectorName);
+            collectorObject.transform.SetParent(transform);
+
+            // Create a parent object to collect obstacle prefabs
+            collectorObject.transform.position = transform.position + (positionOffset + new Vector3(0, 0, m_parentSpacingUsed));
 
             for (int i = 0; i < layout.GetLength(0); i++)
             {
@@ -140,9 +147,8 @@ namespace BonusFeatures1
                 {
                     if (layout[i, j] == 1)
                     {
-                        Vector3 position = parentObject.transform.position + new Vector3(j * m_prefabSpacingMultiplyer, (layout.GetLength(0) - 1 - i) * m_prefabSpacingMultiplyer, 0);
-                        GameObject obstacle = Instantiate(m_obstaclePrefab, position, Quaternion.identity);
-                        obstacle.transform.SetParent(parentObject.transform);
+                        Vector3 position = collectorObject.transform.position + new Vector3(j * m_prefabSpacingMultiplyer, (layout.GetLength(0) - 1 - i) * m_prefabSpacingMultiplyer, 0);
+                        Instantiate(m_obstaclePrefab, position, Quaternion.identity, collectorObject.transform);
                     }
                 }
             }
