@@ -6,13 +6,13 @@ public class FollowPlayer : MonoBehaviour
 {
     [SerializeField] GameObject m_player;
     
-    Vector3 m_offset;
+    Vector3 m_offset = new Vector3(0f,5f,-10f);
 
 
     // Start is called before the first frame update
     void Start()
     {
-        m_offset = transform.position;
+        
     }
 
     // Update is called once per frame
