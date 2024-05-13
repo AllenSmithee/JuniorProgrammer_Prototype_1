@@ -865,7 +865,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_speed: 10
-  m_turnSpeed: 5
+  m_turnSpeed: 25
   m_horizontalInput: 0
   m_verticalInput: 0
 --- !u!54 &746870500
@@ -1163,18 +1163,6 @@ PrefabInstance:
     - target: {fileID: 178130, guid: 70bf34f6c25c948458f254e87188b00b, type: 3}
       propertyPath: m_Name
       value: Vehicle
-      objectReference: {fileID: 0}
-    - target: {fileID: 436868, guid: 70bf34f6c25c948458f254e87188b00b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.5271263
-      objectReference: {fileID: 0}
-    - target: {fileID: 436868, guid: 70bf34f6c25c948458f254e87188b00b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.0000019073486
-      objectReference: {fileID: 0}
-    - target: {fileID: 436868, guid: 70bf34f6c25c948458f254e87188b00b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -1.4485874
       objectReference: {fileID: 0}
     - target: {fileID: 436868, guid: 70bf34f6c25c948458f254e87188b00b, type: 3}
       propertyPath: m_LocalRotation.w

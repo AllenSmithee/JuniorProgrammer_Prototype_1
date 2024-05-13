@@ -35,8 +35,9 @@ namespace Course_01
             //transform.Translate(Vector3.forward);
             transform.Translate(Vector3.forward * Time.deltaTime * m_speed * m_verticalInput);
 
-            transform.Translate(Vector3.right * Time.deltaTime * m_turnSpeed * m_horizontalInput);
+            //transform.Translate(Vector3.right * Time.deltaTime * m_turnSpeed * m_horizontalInput);
 
+            transform.Rotate(Vector3.up, m_turnSpeed * m_horizontalInput * Time.deltaTime);
 
 
         }
