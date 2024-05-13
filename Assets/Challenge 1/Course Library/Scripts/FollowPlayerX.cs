@@ -16,7 +16,20 @@ public class FollowPlayerX : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
+        FollowAndPutInfrontOfPlayer();
+    }
+
+    void FollowPlayer()
+    {
         transform.position = plane.transform.position + offset;
+
+    }
+
+    void FollowAndPutInfrontOfPlayer()
+    {
+        Vector3 rotatedOffset = plane.transform.rotation * offset;
+        transform.position = plane.transform.position + rotatedOffset;
+        transform.LookAt(plane.transform);
     }
 
 

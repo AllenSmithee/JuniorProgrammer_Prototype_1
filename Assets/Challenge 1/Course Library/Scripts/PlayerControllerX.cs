@@ -17,16 +17,16 @@ public class PlayerControllerX : MonoBehaviour
     void Update()
     {
         GetInputValue();
+
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        MoveForward();
-
         RotatePlane();
-
+        MoveForward();
     }
+
 
 
     void GetInputValue()
@@ -38,13 +38,19 @@ public class PlayerControllerX : MonoBehaviour
     void MoveForward()
     {
         // move the plane forward at a constant rate
-        transform.Translate(Vector3.forward * m_speed);
+        transform.Translate(Vector3.forward * m_speed * Time.deltaTime);
     }
 
     void RotatePlane()
     {
+        // turn on freezerotationX constraints and reset value of physic of rotation while input is not 0
+        var rb = GetComponent<Rigidbody>();
+        rb.constraints = m_verticalInput != 0 ? (rb.constraints | RigidbodyConstraints.FreezeRotationX) : (rb.constraints & ~RigidbodyConstraints.FreezeRotationX);
+
+
         // tilt the plane up/down based on up/down arrow keys
         transform.Rotate(Vector3.right * m_rotationSpeed * Time.deltaTime * m_verticalInput);
+
     }
 
 
