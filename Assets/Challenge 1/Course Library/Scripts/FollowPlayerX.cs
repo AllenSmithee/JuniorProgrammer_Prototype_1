@@ -2,35 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FollowPlayerX : MonoBehaviour
+namespace Challenge_1
 {
-    public GameObject plane;
-    private Vector3 offset = new Vector3(40.0f, 0, 15.0f);
-
-    // Start is called before the first frame update
-    void Start()
+    public class FollowPlayerX : MonoBehaviour
     {
+        [SerializeField] GameObject m_plane;
+        private Vector3 m_offset = new Vector3(40.0f, 0, 15.0f);
+
+
+
+        // Start is called before the first frame update
+        void Start()
+        {
+            
+        }
+
+        // Update is called once per frame
+        void LateUpdate()
+        {
+            DynamicFollowPlayer();
+        }
+
+        void DynamicFollowPlayer()
+        {
+            Vector3 rotatedOffset = m_plane.transform.rotation * m_offset;
+            transform.position = m_plane.transform.position + rotatedOffset;
+            transform.LookAt(m_plane.transform);
+        }
+
 
     }
-
-    // Update is called once per frame
-    void LateUpdate()
-    {
-        FollowAndPutInfrontOfPlayer();
-    }
-
-    void FollowPlayer()
-    {
-        transform.position = plane.transform.position + offset;
-
-    }
-
-    void FollowAndPutInfrontOfPlayer()
-    {
-        Vector3 rotatedOffset = plane.transform.rotation * offset;
-        transform.position = plane.transform.position + rotatedOffset;
-        transform.LookAt(plane.transform);
-    }
-
-
 }
