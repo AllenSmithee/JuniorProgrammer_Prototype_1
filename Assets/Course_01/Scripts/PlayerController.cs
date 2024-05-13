@@ -16,7 +16,8 @@ namespace Course_01
         void CourseMoveForward()
         {
             //using transform position change to move forward
-            transform.Translate(Vector3.forward);
+            //transform.Translate(Vector3.forward);
+            transform.Translate(Vector3.forward * Time.deltaTime * 20f);
         }
     }
 }
