@@ -11,25 +11,93 @@ namespace BonusFeatures1
         [SerializeField] private GameObject m_obstaclePrefab;
 
 
-        [SerializeField] private float m_parentSpacingSetting = 25.0f;
+        [SerializeField] private float m_parentSpacingSetting = 20.0f;
         private float m_parentSpacingUsed = 0.0f;
-        [SerializeField] private float m_prefabSpacingMultiplyer = 1.5f;
+        [SerializeField] private float m_prefabSpacingMultiplyer = 1.55f;
+
+
+        [Space(10)]
+        [Header("Easy Obstacles pyramids")]
+        [SerializeField] private bool m_easyObstaclesPyramids = false;
+
+        [Space(10)]
+        [Header("Medium OnComing Vehicles")]
+        [SerializeField] private bool m_mediumOnComingVehicles = false;
+
+
+
+        Vector3 m_oneInitPos = new Vector3(-0.15f, 0, 0);
+        Vector3 m_triangleInitPos = new Vector3(-3.25f, 0, 0);
+        Vector3 m_tallRectangleInitPos = new Vector3(-1.75f, 0, 0);
+        Vector3 m_lowRectangleInitPos = new Vector3(-4.0f, 0, 0);
+        Vector3 m_oneColumnInitPos = new Vector3(-0.15f, 0, 0);
+        Vector3 m_wallInitPos = new Vector3(-7.15f, 0, 0);
+
+
+
+
+        #region ObstacleLayouts
+        int[,] m_oneLayout =
+        {
+            {1}
+        };
+
+        int[,] m_traingleLayout =
+        {
+            {0, 0, 1, 0, 0},
+            {0, 1, 1, 1, 0},
+            {1, 1, 1, 1, 1}
+        };
+
+        int[,] m_tallRectangleLayout =
+        {
+            {1,1,1},
+            {1,1,1},
+            {1,1,1},
+            {1,1,1},
+            {1,1,1}
+        };
+
+        int[,] m_lowRectangleLayout =
+        {
+            {1,1,1,1,1,1},
+            {1,1,1,1,1,1},
+            {1,1,1,1,1,1},
+        };
+
+        int[,] m_oneColumnLayout =
+        {
+            {1},
+            {1},
+            {1},
+            {1},
+            {1},
+            {1},
+            {1}
+        };
+
+        int[,] m_wallLayout =
+        {
+            {1,1,1,1,1,1,1,1,1,1},
+            {1,1,1,1,1,1,1,1,1,1},
+            {1,1,1,1,1,1,1,1,1,1},
+            {1,1,1,1,1,1,1,1,1,1},
+            {1,1,1,1,1,1,1,1,1,1},
+            {1,1,1,1,1,1,1,1,1,1},
+            {1,1,1,1,1,1,1,1,1,1}
+        };
+        #endregion
 
 
         // Start is called before the first frame update
         void Start()
         {
-            SpawnTriangle();
-            SpawnTallRectangle();
-            SpawnLowRectangle();
-            SpawnOneColumn();
+            if (m_easyObstaclesPyramids)
+                EasyObstaclesPyramids();
 
-            SpawnTriangle();
-            SpawnTallRectangle();
-            SpawnLowRectangle();
-            SpawnTriangle();
+            if (m_mediumOnComingVehicles)
+                MediumOnComingVehicles();
 
-            SpawnWall();
         }
 
         void IncreaseParentSpacing()
@@ -37,153 +105,34 @@ namespace BonusFeatures1
             m_parentSpacingUsed += m_parentSpacingSetting;
         }
 
-        // make a Triangle
-        void SpawnTriangle()
+
+        void EasyObstaclesPyramids()
         {
-            IncreaseParentSpacing();
-            // Create a parent object to collect obstacle prefabs
-            GameObject parentObject = new GameObject("Triangle");
+            SpawnObstacles("Triangle", m_triangleInitPos, m_traingleLayout);
+            SpawnObstacles("TallRectangle", m_tallRectangleInitPos, m_tallRectangleLayout);
+            SpawnObstacles("LowRectangle", m_lowRectangleInitPos, m_lowRectangleLayout);
+            SpawnObstacles("OneColumn", m_oneColumnInitPos, m_oneColumnLayout);
+            SpawnObstacles("Triangle2", m_triangleInitPos, m_traingleLayout);
+            SpawnObstacles("LowRectangle2", m_lowRectangleInitPos, m_lowRectangleLayout);
+            SpawnObstacles("TallRectangle2", m_tallRectangleInitPos, m_tallRectangleLayout);
+            SpawnObstacles("Triangle3", m_triangleInitPos, m_traingleLayout);
+            SpawnObstacles("Wall", m_wallInitPos, m_wallLayout);
+        }
 
-            // Set the position of the parent object
-            parentObject.transform.position = transform.position + new Vector3(-2.5f, 0, m_parentSpacingUsed);
-
-
-            int[,] layout =
+        void MediumOnComingVehicles()
+        {
+            for (int i = 1; i <= 9; i++)
             {
-                {0, 0, 1, 0, 0},
-                {0, 1, 1, 1, 0},
-                {1, 1, 1, 1, 1}
-            };
-
-            for (int i = 0; i < layout.GetLength(0); i++)
-            {
-                for (int j = 0; j < layout.GetLength(1); j++)
-                {
-                    if (layout[i, j] == 1)
-                    {
-                        Vector3 position = parentObject.transform.position + new Vector3(j * m_prefabSpacingMultiplyer, (layout.GetLength(0) - 1 - i) * m_prefabSpacingMultiplyer, 0);
-                        GameObject obstacle = Instantiate(m_obstaclePrefab, position, Quaternion.identity);
-                        obstacle.transform.SetParent(parentObject.transform);
-                    }
-                }
+                SpawnObstacles("One" + i, m_oneInitPos, m_oneLayout);
             }
         }
 
-        void SpawnTallRectangle()
+        void SpawnObstacles(string parentName, Vector3 positionOffset, int[,] layout)
         {
             IncreaseParentSpacing();
+            GameObject parentObject = new GameObject(parentName);
             // Create a parent object to collect obstacle prefabs
-            GameObject parentObject = new GameObject("TallRectangle");
-
-            // Set the position of the parent object
-            parentObject.transform.position = transform.position + new Vector3(-1f, 0, m_parentSpacingUsed);
-
-            int[,] layout =
-            {
-                {1,1,1},
-                {1,1,1},
-                {1,1,1},
-                {1,1,1},
-                {1,1,1}
-            };
-
-            for (int i = 0; i < layout.GetLength(0); i++)
-            {
-                for (int j = 0; j < layout.GetLength(1); j++)
-                {
-                    if (layout[i, j] == 1)
-                    {
-                        Vector3 position = parentObject.transform.position + new Vector3(j * m_prefabSpacingMultiplyer, (layout.GetLength(0) - 1 - i) * m_prefabSpacingMultiplyer, 0);
-                        GameObject obstacle = Instantiate(m_obstaclePrefab, position, Quaternion.identity);
-                        obstacle.transform.SetParent(parentObject.transform);
-                    }
-                }
-            }
-        }
-
-        void SpawnLowRectangle()
-        {
-            IncreaseParentSpacing();
-            // Create a parent object to collect obstacle prefabs
-            GameObject parentObject = new GameObject("LowRectangle");
-
-            // Set the position of the parent object
-            parentObject.transform.position = transform.position + new Vector3(-4, 0, m_parentSpacingUsed);
-
-            int[,] layout =
-            {
-                {1,1,1,1,1,1},
-                {1,1,1,1,1,1},
-                {1,1,1,1,1,1},
-            };
-
-            for (int i = 0; i < layout.GetLength(0); i++)
-            {
-                for (int j = 0; j < layout.GetLength(1); j++)
-                {
-                    if (layout[i, j] == 1)
-                    {
-                        Vector3 position = parentObject.transform.position + new Vector3(j * m_prefabSpacingMultiplyer, (layout.GetLength(0) - 1 - i) * m_prefabSpacingMultiplyer, 0);
-                        GameObject obstacle = Instantiate(m_obstaclePrefab, position, Quaternion.identity);
-                        obstacle.transform.SetParent(parentObject.transform);
-                    }
-                }
-            }
-        }
-
-        void SpawnOneColumn()
-        {
-            IncreaseParentSpacing();
-            // Create a parent object to collect obstacle prefabs
-            GameObject parentObject = new GameObject("OneColumn");
-
-            // Set the position of the parent object
-            parentObject.transform.position = transform.position + new Vector3(0, 0, m_parentSpacingUsed);
-
-            int[,] layout =
-            {
-                {1},
-                {1},
-                {1},
-                {1},
-                {1},
-                {1},
-                {1}
-            };
-
-            for (int i = 0; i < layout.GetLength(0); i++)
-            {
-                for (int j = 0; j < layout.GetLength(1); j++)
-                {
-                    if (layout[i, j] == 1)
-                    {
-                        Vector3 position = parentObject.transform.position + new Vector3(j * m_prefabSpacingMultiplyer, (layout.GetLength(0) - 1 - i) * m_prefabSpacingMultiplyer, 0);
-                        GameObject obstacle = Instantiate(m_obstaclePrefab, position, Quaternion.identity);
-                        obstacle.transform.SetParent(parentObject.transform);
-                    }
-                }
-            }
-        }
-
-        void SpawnWall()
-        {
-            IncreaseParentSpacing();
-            // Create a parent object to collect obstacle prefabs
-            GameObject parentObject = new GameObject("Wall");
-
-            // Set the position of the parent object
-            parentObject.transform.position = transform.position + new Vector3(-7, 0, m_parentSpacingUsed);
-
-            int[,] layout =
-            {
-                {1,1,1,1,1,1,1,1,1,1},
-                {1,1,1,1,1,1,1,1,1,1},
-                {1,1,1,1,1,1,1,1,1,1},
-                {1,1,1,1,1,1,1,1,1,1},
-                {1,1,1,1,1,1,1,1,1,1},
-                {1,1,1,1,1,1,1,1,1,1},
-                {1,1,1,1,1,1,1,1,1,1}
-            };
+            parentObject.transform.position = transform.position + (positionOffset + new Vector3(0, 0, m_parentSpacingUsed));
 
             for (int i = 0; i < layout.GetLength(0); i++)
             {
