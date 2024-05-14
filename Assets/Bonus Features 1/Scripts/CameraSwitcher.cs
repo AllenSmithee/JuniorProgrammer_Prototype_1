@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using Course_01.Camera;
-using Unity.VisualScripting;
+using Course_01;
 using UnityEngine;
 
 
-namespace BonusFeatures1.Camera
+namespace BonusFeatures1
 {
     public class CameraSwitcher : MonoBehaviour
     {
