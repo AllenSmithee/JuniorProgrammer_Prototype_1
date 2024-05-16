@@ -2,13 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AimCube : MonoBehaviour
+
+namespace ModTheCube
 {
-    [SerializeField] GameObject m_cube;
-    void Start()
+    public class AimCube : MonoBehaviour
     {
-        transform.LookAt(m_cube.transform);
+        [SerializeField] GameObject m_cube;
+
+        void OnEnable()
+        {
+            var targetscript = m_cube.GetComponent<Cube>();
+            targetscript.OnRandomEverythingAction += LookAtCube;
+        }
+        void OnDisable()
+        {
+            var targetscript = m_cube.GetComponent<Cube>();
+            targetscript.OnRandomEverythingAction -= LookAtCube;
+
+        }
+
+
+        void Start()
+        {
+            LookAtCube();
+        }
+
+        void LookAtCube()
+        {
+            transform.LookAt(m_cube.transform);
+        }
+
     }
-
-
 }
