@@ -57,14 +57,19 @@ public class Cube : MonoBehaviour
         get => m_color = Random.ColorHSV(0f, 1f, 0f, 1f, 0f, 1f, AlphaColor, AlphaColor);
     }
 
+    void Awake()
+    {
+        if (m_startRandom)
+            RandomStart();
+    }
+
     void Start()
     {
+        if (m_startRandom)
+            return;
         transform.position = m_position;
         transform.localScale = Scale;
         m_material.color = new Color(m_color.r, m_color.g, m_color.b, AlphaColor);
-
-        if (m_startRandom)
-            RandomStart();
     }
 
     void Update()
