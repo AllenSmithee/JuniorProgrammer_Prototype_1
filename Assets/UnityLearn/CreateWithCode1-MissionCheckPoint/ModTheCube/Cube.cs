@@ -173,11 +173,14 @@ namespace ModTheCube
         {
 
             StopAllCoroutines();
+            m_colorIsChanging = false;
+            
             transform.position = new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), Random.Range(-10, 10));
             transform.localScale = new Vector3(Random.Range(1, 5), Random.Range(1, 5), Random.Range(1, 5));
             transform.Rotate(Random.Range(0, 360), Random.Range(0, 360), Random.Range(0, 360));
 
             OnRandomEverythingAction?.Invoke();
+            
             m_material.color = NewColor;
         }
 
